@@ -1,35 +1,39 @@
 import "./App.css";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
-import fond3 from "./assets/fond3.jpg";
+import logo1 from "./assets/svg/logo1.svg";
 
 function App() {
-  //=null si aucun wallet n'est connecté et contient un objet {adress: "0x123..."}
-  // qunad Phantom est connecté
+  // = null si aucun wallet n'est connecté, sinon { address: "0x123..." }
   const currentAccount = useCurrentAccount();
 
-  // petite fonction utilitaire pour afficher une adresse raccourcie
+  // Affiche une adresse raccourcie
   const shortAddress = (address) =>
     address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "";
 
   return (
-    <div className="app">
-      <aside className="sidebar">
-        <div className="sidebar-logo">
-          <span className="logo-dot" />
-          <span className="logo-text">SUI-CS</span>
-        </div>
+  <div className="app">
+    {/* SIDEBAR FIXE À GAUCHE */}
+    <aside className="sidebar">
+      <div className="sidebar-logo">
+        <img src={logo1} alt="SUI-CS logo" className="logo-img" />
+        <span className="logo-text">SUI-CS</span>
+      </div>
 
-        <nav className="sidebar-nav">
-          <button className="nav-item nav-item-active">Dashboard</button>
-          <button className="nav-item">Pools</button>
-          <button className="nav-item">Bots</button>
-          <button className="nav-item">Portfolio</button>
-        </nav>
+      <nav className="sidebar-nav">
+        <button className="sidebar-button">Dashboard</button>
+        <button className="sidebar-button">Pools</button>
+        <button className="sidebar-button">Bots</button>
+        <button className="sidebar-button">Portfolio</button>
+      </nav>
 
-        <div className="sidebar-footer">
-          <p className="sidebar-network">SUI Devnet</p>
-        </div>
-      </aside>
+      <div className="sidebar-footer">
+        <p className="sidebar-network">SUI Devnet</p>
+      </div>
+    </aside>
+
+    {/* 🔹 TOUT le reste du site (bande + main) est DANS .content */}
+    <div className="content">
+      <div className="top-banner" />
 
       <main className="main">
         <header className="topbar">
@@ -40,7 +44,6 @@ function App() {
             </p>
           </div>
 
-          {/* Zone wallet à droite */}
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             {currentAccount && (
               <div className="wallet-chip">
@@ -50,8 +53,6 @@ function App() {
                 </span>
               </div>
             )}
-
-            {/* Bouton de connexion SUI dapp-kit */}
             <ConnectButton />
           </div>
         </header>
@@ -161,7 +162,9 @@ function App() {
         </section>
       </main>
     </div>
-  );
+  </div>
+);
+
 }
 
 export default App;

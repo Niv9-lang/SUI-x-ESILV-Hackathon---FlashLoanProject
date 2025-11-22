@@ -4,9 +4,9 @@
   --bg-softer: #1d1d29;
 
   /* RED theme */
-  --accent: #ff2b4a;              /* Red primary */
+  --accent: #ff2b4a;
   --accent-soft: rgba(255, 43, 74, 0.25);
-  --accent-strong: #ff556a;       /* Bright neon red */
+  --accent-strong: #ff556a;
 
   --text-main: #e5e7eb;
   --text-soft: #9ca3af;
@@ -22,16 +22,11 @@
 
 .app {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-
-  background-image: url("./assets/fond3.jpg");
-  background-size: cover;       /* L'image couvre tout l'écran */
-  background-position: center;  /* centrée */
-  background-repeat: no-repeat; /* pas de répétition */
-
   color: var(--text-main);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Inter", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Barlow",
+    "Barlow", sans-serif;
 }
 
 /* SIDEBAR */
@@ -40,10 +35,29 @@
   width: 260px;
   padding: 24px 20px;
   border-right: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), #020617 80%);
+  background: hsl(253, 100%, 7%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-family: "Barlow", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.content {
+  margin-left: 260px;           /* même largeur que .sidebar */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-img {
+  width: 30px;
+  border-radius: 999px;
+  height: auto;
+  display: block;
 }
 
 .sidebar-logo {
@@ -53,19 +67,11 @@
   margin-bottom: 32px;
 }
 
-.logo-dot {
-  width: 26px;
-  height: 26px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 30% 30%, #f97316, #a4ad1d 50%, #ffffff 100%);
-  box-shadow: var(--shadow-glow);
-}
-
 .logo-text {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.86rem;
+  font-size: 1.5rem;
   color: #e5e7eb;
 }
 
@@ -74,30 +80,30 @@
   flex-direction: column;
   gap: 8px;
 }
-
-.nav-item {
+/* bouton de la side barre */
+.sidebar-button {
   border: none;
   border-radius: 999px;
   padding: 10px 14px;
   text-align: left;
   background: transparent;
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: 600;
   transition: background 0.2s, color 0.2s, transform 0.1s;
 }
 
-.nav-item:hover {
-  background: rgba(148, 163, 184, 0.1);
+.sidebar-button:hover {
+  background: rgba(69, 2, 107, 0.938);
   color: var(--text-main);
   transform: translateX(2px);
 }
 
-.nav-item-active {
-  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+.sidebar-button-active {
   color: white;
   box-shadow: var(--shadow-glow);
 }
@@ -126,6 +132,18 @@
   gap: 22px;
 }
 
+/* TOP BANNER */
+
+.top-banner {
+  width: 100%;
+  height: 220px; /* ajuste la hauteur comme tu veux */
+  background-image: url("./assets/svg/logo3.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
 /* TOPBAR */
 
 .topbar {
@@ -145,25 +163,7 @@
   font-size: 0.9rem;
 }
 
-.wallet-button {
-  border-radius: 999px;
-  border: 1px solid var(--accent-strong);
-  background: radial-gradient(circle at top left, rgba(251, 255, 0, 0.5), #020617);
-  color: #f9fafb;
-  padding: 9px 18px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: var(--shadow-glow);
-  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.wallet-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 45px rgba(255, 238, 2, 0.5);
-}
+/* Wallet */
 
 .wallet-dot {
   width: 9px;
@@ -173,7 +173,7 @@
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
 }
 
-/* STATS */
+/* STAT CARDS */
 
 .stats-grid {
   display: grid;
@@ -182,7 +182,11 @@
 }
 
 .card {
-  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.15), var(--bg-soft));
+  background: radial-gradient(
+    circle at top left,
+    rgba(148, 163, 184, 0.15),
+    var(--bg-soft)
+  );
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-soft);
   padding: 16px 18px;
@@ -312,6 +316,8 @@
   box-shadow: 0 0 0 1px rgba(247, 244, 85, 0.4);
 }
 
+/* BUTTON */
+
 .primary-btn {
   width: 100%;
   border-radius: 12px;
@@ -319,7 +325,7 @@
   margin-top: 4px;
   padding: 10px 14px;
   background: linear-gradient(90deg, #ff2b4a, #ff7a1a, #ffea00);
-  color: #f9fafb;
+  color: #faf9fb;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -331,6 +337,25 @@
   font-size: 0.78rem;
   color: var(--text-soft);
   line-height: 1.4;
+}
+
+/* Custom du bouton connect Wallet */
+.topbar button {
+  border-radius: 999px;
+  padding: 10px 22px;
+  background: rgb(16, 212, 42);
+  color: rgb(68, 4, 170) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 12px rgba(73, 3, 165, 0.4) !important;
+  transition: transform 0.15s ease, box-shadow 0.2s ease !important;
+}
+
+.topbar button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 0 25px rgba(175, 13, 250, 0.7) !important;
 }
 
 /* RESPONSIVE */
@@ -356,3 +381,5 @@
     grid-column: auto;
   }
 }
+
+
