@@ -1,0 +1,12 @@
+
+[package]
+name = "swap"
+edition = "2024.beta"
+
+[dependencies]
+deepbook = { git = "https://github.com/MystenLabs/deepbookv3.git", subdir = "packages/deepbook", rev = "main" }
+TurbosCLMM = { git = "https://github.com/turbos-finance/turbos-sui-move-interface.git", subdir = "clmm", rev = "testnet-v0.1.4", override = true }
+
+[addresses]
+swap = "0x0"
+# deepbook address is defined in the deepbookv3 package itself
