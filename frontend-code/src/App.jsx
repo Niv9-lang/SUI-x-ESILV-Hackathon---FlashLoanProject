@@ -1,10 +1,29 @@
+import { useState } from "react";
 import "./App.css";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
+import logoSUI from "./assets/logoSUI.jpg";
 import logo1 from "./assets/svg/logo1.svg";
+import logo4 from "./assets/svg/logo4.svg";
+import logo5 from "./assets/svg/logo5.svg";
+import logo6 from "./assets/svg/logo6.svg";
+
 
 function App() {
   // = null si aucun wallet n'est connecté, sinon { address: "0x123..." }
   const currentAccount = useCurrentAccount();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPool, setSelectedPool] = useState(null);
+
+  const openFlashLoanModal = (poolName) => {
+    setSelectedPool(poolName);
+    setIsModalOpen(true);
+  };
+
+  const closeFlashLoanModal = () => {
+    setIsModalOpen(false);
+  };
+
 
   // Affiche une adresse raccourcie
   const shortAddress = (address) =>
@@ -15,15 +34,12 @@ function App() {
     {/* SIDEBAR FIXE À GAUCHE */}
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <img src={logo1} alt="SUI-CS logo" className="logo-img" />
+        <img src={logoSUI} alt="SUI-CS logo" className="logo-img" />
         <span className="logo-text">SUI-CS</span>
       </div>
 
       <nav className="sidebar-nav">
         <button className="sidebar-button">Dashboard</button>
-        <button className="sidebar-button">Pools</button>
-        <button className="sidebar-button">Bots</button>
-        <button className="sidebar-button">Portfolio</button>
       </nav>
 
       <div className="sidebar-footer">
@@ -38,7 +54,7 @@ function App() {
       <main className="main">
         <header className="topbar">
           <div>
-            <h1 className="topbar-title">Flash Loan Dashboard</h1>
+            <h1 className="topbar-title">Make free money with Flash Loan</h1>
             <p className="topbar-subtitle">
               Monitor liquidity, launch arbitrage bots and manage your positions.
             </p>
@@ -47,10 +63,10 @@ function App() {
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             {currentAccount && (
               <div className="wallet-chip">
-                <span className="wallet-dot" />
-                <span className="wallet-address">
-                  {shortAddress(currentAccount.address)}
+                <span className="wallet-dot"></span>
+                <span className="wallet-address">{currentAccount ? "Connected" : ""}
                 </span>
+
               </div>
             )}
             <ConnectButton />
@@ -59,11 +75,6 @@ function App() {
 
         <section className="stats-grid">
           <div className="card">
-            <p className="card-label">Total Liquidity</p>
-            <p className="card-value">$12.4M</p>
-            <p className="card-sub">Across all SUI pools</p>
-          </div>
-          <div className="card">
             <p className="card-label">Active Bots</p>
             <p className="card-value">27</p>
             <p className="card-sub">Running arbitrage strategies</p>
@@ -71,7 +82,7 @@ function App() {
           <div className="card">
             <p className="card-label">Protocol Revenue (24h)</p>
             <p className="card-value">$8 520</p>
-            <p className="card-sub">From flash loan fees</p>
+            <p className="card-sub">From flash loan</p>
           </div>
         </section>
 
@@ -79,7 +90,7 @@ function App() {
           <div className="card card-large">
             <div className="card-header">
               <h2>Flash Loan Pools</h2>
-              <span className="badge">SUI / USDC / ETH</span>
+              <span className="badge">SUI / USDC / wETH / USDT</span>
             </div>
 
             <table className="table">
@@ -88,78 +99,103 @@ function App() {
                   <th>Pool</th>
                   <th>Liquidity</th>
                   <th>Fee</th>
-                  <th>Oracle</th>
-                  <th></th>
+                  <th>Flash Loan</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>SUI / USDC</td>
+                  <td className="pool-cell">
+                    <img src={logo1} className="token-logo" alt="SUI"/>
+                    <span>SUI / USDC</span>
+                    <img src={logo6} className="token-logo" alt="USDC" />
+                  </td>
                   <td>$4.1M</td>
                   <td>0.09%</td>
-                  <td>Pyth</td>
                   <td>
-                    <button className="table-btn">Arbitrage</button>
+                    <button 
+                      className="table-btn"
+                      onClick={() => openFlashLoanModal("SUI / USDC")}
+                    >
+                      Click here
+                    </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>ETH / USDC</td>
+                  <td className="pool-cell">
+                    <img src={logo1} className="token-logo" alt="SUI" />
+                    <span>SUI / USDT</span>
+                    <img src={logo5} className="token-logo" alt="USDT"/>
+                  </td>
                   <td>$3.6M</td>
                   <td>0.12%</td>
-                  <td>Pyth</td>
                   <td>
-                    <button className="table-btn">Arbitrage</button>
+                    <button 
+                    className="table-btn"
+                    onClick={() => openFlashLoanModal("SUI / USDT")}
+                  >
+                    Click here
+                  </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>BTC / USDC</td>
+                  <td className="pool-cell">
+                    <img src={logo1} className="token-logo" alt="SUI" />
+                    <span>SUI / wETH</span>
+                    <img src={logo4} className="token-logo" alt="wETH"/>
+                  </td>
                   <td>$2.7M</td>
                   <td>0.10%</td>
-                  <td>Pyth</td>
                   <td>
-                    <button className="table-btn">Arbitrage</button>
+                    <button 
+                    className="table-btn"
+                    onClick={() => openFlashLoanModal("SUI / wETH")}
+                  >
+                    Click here
+                  </button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-
-          <div className="card">
-            <div className="card-header">
-              <h2>Quick Flash Loan</h2>
-            </div>
-
-            <div className="form-group">
-              <label>Asset</label>
-              <select>
-                <option>SUI</option>
-                <option>USDC</option>
-                <option>ETH</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Amount</label>
-              <input type="number" placeholder="0.00" />
-            </div>
-
-            <div className="form-group">
-              <label>Strategy</label>
-              <select>
-                <option>Best arbitrage on Cetus / Scallop</option>
-                <option>Simple SUI &lt;&gt; USDC spread</option>
-                <option>Custom bot (coming soon)</option>
-              </select>
-            </div>
-
-            <button className="primary-btn">Simulate Flash Loan</button>
-
-            <p className="hint">
-              All operations happen in a single SUI transaction. If the loan is
-              not fully repaid, the transaction is reverted.
-            </p>
-          </div>
         </section>
+        {isModalOpen && (
+          <div className="modal-overlay" onClick={closeFlashLoanModal}>
+            <div
+              className="modal"
+              onClick={(e) => e.stopPropagation()} // empêche la fermeture si on clique dans la popup
+            >
+              <div className="modal-header">
+                <h2>Quick Flash Loan</h2>
+                <button className="modal-close" onClick={closeFlashLoanModal}>
+          ✕
+                </button>
+              </div>
+
+              <p className="modal-subtitle">Pool: {selectedPool}</p>
+
+              <div className="form-group">
+                <label>Amount</label>
+                <input type="number" placeholder="0.00" />
+              </div>
+
+              <div className="form-group">
+                <label>Strategy</label>
+                <select>
+                  <option>Best arbitrage on Cetus / Scallop</option>
+                  <option>Simple spread on SUI</option>
+                  <option>Custom bot (coming soon)</option>
+                </select>
+              </div>
+
+              <button className="primary-btn">Simulate Flash Loan</button>
+
+              <p className="hint">
+                This is a flash loan simulation on {selectedPool}. All operations happen
+                in a single SUI transaction.
+              </p>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   </div>
