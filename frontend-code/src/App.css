@@ -1,0 +1,385 @@
+:root {
+  --bg: #0a0a0f;
+  --bg-soft: #15151d;
+  --bg-softer: #1d1d29;
+
+  /* RED theme */
+  --accent: #ff2b4a;
+  --accent-soft: rgba(255, 43, 74, 0.25);
+  --accent-strong: #ff556a;
+
+  --text-main: #e5e7eb;
+  --text-soft: #9ca3af;
+
+  --border-soft: rgba(255, 43, 74, 0.25);
+
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(255, 43, 74, 0.35);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Barlow",
+    "Barlow", sans-serif;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 260px;
+  padding: 24px 20px;
+  border-right: 1px solid var(--border-soft);
+  background: hsl(253, 100%, 7%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Barlow", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.content {
+  margin-left: 260px;           /* même largeur que .sidebar */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-img {
+  width: 30px;
+  border-radius: 999px;
+  height: auto;
+  display: block;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.logo-text {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  color: #e5e7eb;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* bouton de la side barre */
+.sidebar-button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  text-align: left;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.sidebar-button:hover {
+  background: rgba(69, 2, 107, 0.938);
+  color: var(--text-main);
+  transform: translateX(2px);
+}
+
+.sidebar-button-active {
+  color: white;
+  box-shadow: var(--shadow-glow);
+}
+
+.sidebar-footer {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  border-top: 1px solid rgba(15, 23, 42, 0.9);
+  padding-top: 16px;
+}
+
+.sidebar-network {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  display: inline-block;
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  padding: 26px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* TOP BANNER */
+
+.top-banner {
+  width: 100%;
+  height: 220px; /* ajuste la hauteur comme tu veux */
+  background-image: url("./assets/svg/logo3.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+/* TOPBAR */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.topbar-title {
+  font-size: 1.6rem;
+  letter-spacing: 0.03em;
+}
+
+.topbar-subtitle {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+/* Wallet */
+
+.wallet-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+}
+
+/* STAT CARDS */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: radial-gradient(
+    circle at top left,
+    rgba(148, 163, 184, 0.15),
+    var(--bg-soft)
+  );
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.card-large {
+  grid-column: span 2;
+}
+
+.card-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+}
+
+.card-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.card-sub {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  margin-top: 4px;
+}
+
+/* CONTENT GRID */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+/* CARD HEADER */
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.card-header h2 {
+  font-size: 1rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  color: var(--text-soft);
+}
+
+/* TABLE */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  margin-top: 6px;
+}
+
+.table th,
+.table td {
+  padding: 8px 4px;
+  text-align: left;
+}
+
+.table th {
+  color: var(--text-soft);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 230, 0, 0.8);
+}
+
+.table tr + tr td {
+  border-top: 1px solid rgba(15, 23, 42, 0.9);
+}
+
+.table tr:hover td {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.table-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  background: rgba(124, 58, 237, 0.16);
+  color: var(--accent-strong);
+}
+
+/* FORM */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.form-group label {
+  color: var(--text-soft);
+}
+
+.form-group input,
+.form-group select {
+  background: var(--bg-softer);
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  padding: 8px 10px;
+  color: var(--text-main);
+  font-size: 0.85rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 1px rgba(247, 244, 85, 0.4);
+}
+
+/* BUTTON */
+
+.primary-btn {
+  width: 100%;
+  border-radius: 12px;
+  border: none;
+  margin-top: 4px;
+  padding: 10px 14px;
+  background: linear-gradient(90deg, #ff2b4a, #ff7a1a, #ffea00);
+  color: #faf9fb;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-glow);
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
+/* Custom du bouton connect Wallet */
+.topbar button {
+  border-radius: 999px;
+  padding: 10px 22px;
+  background: rgb(16, 212, 42);
+  color: rgb(68, 4, 170) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 12px rgba(73, 3, 165, 0.4) !important;
+  transition: transform 0.15s ease, box-shadow 0.2s ease !important;
+}
+
+.topbar button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 0 25px rgba(175, 13, 250, 0.7) !important;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1040px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    padding: 18px 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-large {
+    grid-column: auto;
+  }
+}
+
+
