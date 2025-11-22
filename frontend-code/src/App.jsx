@@ -2,11 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import logoSUI from "./assets/logoSUI.jpg";
-import logo1 from "./assets/svg/logo1.svg";
-import logo4 from "./assets/svg/logo4.svg";
-import logo5 from "./assets/svg/logo5.svg";
-import logo6 from "./assets/svg/logo6.svg";
-
+import logoDEEP from "./assets/logoDEEP.jpg";
 
 function App() {
   // = null si aucun wallet n'est connecté, sinon { address: "0x123..." }
@@ -90,7 +86,7 @@ function App() {
           <div className="card card-large">
             <div className="card-header">
               <h2>Flash Loan Pools</h2>
-              <span className="badge">SUI / USDC / wETH / USDT</span>
+              <span className="badge">SUI / DEEP</span>
             </div>
 
             <table className="table">
@@ -105,9 +101,9 @@ function App() {
               <tbody>
                 <tr>
                   <td className="pool-cell">
-                    <img src={logo1} className="token-logo" alt="SUI"/>
-                    <span>SUI / USDC</span>
-                    <img src={logo6} className="token-logo" alt="USDC" />
+                    <img src={logoSUI} className="token-logo" alt="SUI"/>
+                    <span>SUI / DEEP</span>
+                    <img src={logoDEEP} className="token-logo" alt="USDC" />
                   </td>
                   <td>$4.1M</td>
                   <td>0.09%</td>
@@ -118,40 +114,6 @@ function App() {
                     >
                       Click here
                     </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="pool-cell">
-                    <img src={logo1} className="token-logo" alt="SUI" />
-                    <span>SUI / USDT</span>
-                    <img src={logo5} className="token-logo" alt="USDT"/>
-                  </td>
-                  <td>$3.6M</td>
-                  <td>0.12%</td>
-                  <td>
-                    <button 
-                    className="table-btn"
-                    onClick={() => openFlashLoanModal("SUI / USDT")}
-                  >
-                    Click here
-                  </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="pool-cell">
-                    <img src={logo1} className="token-logo" alt="SUI" />
-                    <span>SUI / wETH</span>
-                    <img src={logo4} className="token-logo" alt="wETH"/>
-                  </td>
-                  <td>$2.7M</td>
-                  <td>0.10%</td>
-                  <td>
-                    <button 
-                    className="table-btn"
-                    onClick={() => openFlashLoanModal("SUI / wETH")}
-                  >
-                    Click here
-                  </button>
                   </td>
                 </tr>
               </tbody>
