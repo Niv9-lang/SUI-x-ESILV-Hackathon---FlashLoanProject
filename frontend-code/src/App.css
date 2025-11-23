@@ -3,7 +3,6 @@
   --bg-soft: #15151d;
   --bg-softer: #1d1d29;
 
-  /* RED theme */
   --accent-strong: #07d623;
 
   --text-main: #dadada;
@@ -24,20 +23,19 @@
   flex-direction: column;
   min-height: 100vh;
   color: var(--text-main);
-  font-family: Arial, sans-serif;
+  font-family: "General Sans", sans-serif;
 }
 
 /* SIDEBAR */
 
 .sidebar {
-  width: 260px;
+  width: 200px;
   padding: 24px 20px;
   border-right: 1px solid var(--border-soft);
-  background: hsl(253, 100%, 7%);
+  background: hsl(252, 83%, 5%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-family: Arial, sans-serif;
   position: fixed;
   top: 0;
   left: 0;
@@ -45,17 +43,15 @@
 }
 
 .content {
-  margin-left: 260px;
+  margin-left: 200px;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .logo-img {
-  width: 50px;
+  width: 70px;
   border-radius: 999px;
-  height: auto;
-  display: block;
 }
 
 .sidebar-logo {
@@ -67,30 +63,10 @@
 
 .logo-text {
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   font-size: 1.5rem;
   color: #e5e7eb;
-}
-.token-pair {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-right: 8px;
-}
-
-.token-logo {
-  width: 70px;
-  height: 45px;
-  border-radius: -100%;
-}
-
-
-.pool-cell {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
 }
 
 .sidebar-nav {
@@ -99,13 +75,10 @@
   gap: 8px;
 }
 
-/* boutons sidebar */
-
 .sidebar-button {
   border: none;
   border-radius: 999px;
   padding: 10px 14px;
-  text-align: left;
   background: transparent;
   color: var(--text-soft);
   font-size: 1rem;
@@ -134,7 +107,6 @@
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid rgba(69, 2, 107, 0.94);
-  display: inline-block;
 }
 
 /* MAIN */
@@ -155,71 +127,136 @@
   background-image: url("./assets/svg/logo3.svg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
 
 /* TOPBAR */
-
+/* Structure 3 colonnes pour la topbar */
 .topbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* gauche - centre - droite */
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .topbar > div:first-child {
-  flex: 1;
-  text-align: center;
+  flex: 1;                /* prend toute la place disponible */
+  text-align: center;     /* centre le titre et le sous-titre */
 }
 
 .topbar-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   letter-spacing: 0.03em;
 }
 
 .topbar-subtitle {
   color: var(--text-soft);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
-/* Wallet */
+/* Bouton Connect Wallet – style bunni-like */
+.topbar button {
+  border-radius: 500px;
+  padding: 8px 18px;
+  background: rgba(15, 23, 42, 0.9);  /* fond sombre neutre */
+  border: 1px solid rgba(148, 163, 184, 0.35); /* light border */
+  color: #e5e7eb ;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
+}
+
+.topbar button:hover {
+  background: rgba(30, 64, 175, 0.9) !important; /* bleu léger façon bunni */
+  border-color: rgba(129, 140, 248, 0.8) !important;
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.topbar button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(15, 23, 42, 0.9);
+}
+
+/* LOGO À GAUCHE */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* TITRE AU CENTRE */
+.topbar-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* BOUTON CONNECT À DROITE */
+.topbar-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+
+/* WALLET INDICATOR */
 
 .wallet-dot {
   width: 9px;
   height: 9px;
   border-radius: 999px;
+  background: var(--accent-strong);
+}
+
+.wallet-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(69, 2, 107, 0.4);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
 }
 
 /* STAT CARDS */
 
 .stats-grid {
   display: flex;
-  justify-content: center;   /* centre les cartes */
-  gap: 100px;                 /* espace entre elles */
+  justify-content: center;
+  gap: 100px;
 }
 
-
 .card {
-  background: radial-gradient(
-    circle at top left,
-    rgba(141, 5, 175, 0.301),
-    var(--bg-soft)
-  );
+  background: radial-gradient(circle at top left, rgba(141, 5, 175, 0.301), var(--bg-soft));
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-soft);
   padding: 52px 100px;
-
   backdrop-filter: blur(16px);
-}
-
-.card-large {
-  grid-column: span 2;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideUp 0.6s ease-out forwards;
 }
 
 .card-label {
   font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.3em;
   color: var(--text-soft);
   margin-bottom: 20px;
 }
@@ -230,20 +267,18 @@
 }
 
 .card-sub {
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: var(--text-soft);
   margin-top: 4px;
 }
 
-/* CONTENT GRID (pools + modal-trigger) */
+/* POOLS CARD */
 
 .content-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
-
-/* CARD HEADER */
 
 .card-header {
   display: flex;
@@ -257,10 +292,10 @@
 }
 
 .badge {
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid rgb(5, 255, 109);
+  border: 1px solid rgb(59, 5, 129);
   color: var(--text-soft);
 }
 
@@ -269,7 +304,7 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-top: 6px;
 }
 
@@ -293,24 +328,50 @@
   background: rgba(1, 83, 42, 0.39);
 }
 
+/* Bouton Flash – même style que Connect Wallet */
 .table-btn {
-  border-radius: 999px;
-  border: none;
-  padding: 6px 10px;
-  font-size: 1rem;
+  border-radius: 100px;
+  padding: 8px 18px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e5e7eb;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   cursor: pointer;
-  background: rgba(69, 2, 107, 0.94);
-  color: var(--accent-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.3px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
 }
+
+.table-btn:hover {
+  background: rgba(30, 64, 175, 0.9);
+  border-color: rgba(129, 140, 248, 0.8);
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.table-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(15, 23, 42, 0.9);
+}
+
 
 /* FORM */
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 10px;
-  font-size: 1rem;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
 }
 
 .form-group label {
@@ -320,31 +381,30 @@
 .form-group input,
 .form-group select {
   background: var(--bg-softer);
-  border-radius: 10px;
+  border-radius: 50px;
   border: 1px solid var(--border-soft);
-  padding: 8px 10px;
+  padding: 16px 18px;
   color: var(--text-main);
-  font-size: 0.85rem;
+  font-size: 1.2rem;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
   border-color: var(--accent-strong);
-  box-shadow: 0 0 0 1px rgba(247, 244, 85, 0.4);
 }
 
 /* BUTTON */
 
 .primary-btn {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 25px;
   border: none;
-  margin-top: 4px;
-  padding: 10px 14px;
+  margin-top: 10px;
+  padding: 15px 20px;
   background: linear-gradient(90deg, #1c02588e, #80017980);
-  color: #faf9fb;
-  font-size: 0.9rem;
+  color: #c39de9;
+  font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
   box-shadow: var(--shadow-glow);
@@ -352,29 +412,9 @@
 
 .hint {
   margin-top: 8px;
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--text-soft);
   line-height: 1.4;
-}
-
-/* Bouton Connect Wallet */
-
-.topbar button {
-  border-radius: 999px;
-  padding: 10px 22px;
-  background: rgb(77, 3, 95);
-  color: rgba(127, 5, 197, 0.94);
-  font-weight: 00;
-  font-size: 1.2rem;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(69, 2, 107, 0.94);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.topbar button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(2, 201, 52, 0.94);
 }
 
 /* MODAL FLASH LOAN */
@@ -392,9 +432,9 @@
 .modal {
   background: var(--bg-soft);
   border-radius: var(--radius-lg);
-  padding: 22px 24px;
+  padding: 80px 100px;
   width: 100%;
-  max-width: 420px;
+  max-width: 600px;
   box-shadow: var(--shadow-soft);
   border: 1px solid var(--border-soft);
 }
@@ -406,28 +446,49 @@
   margin-bottom: 8px;
 }
 
-.modal-header h2 {
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-.modal-close {
-  background: transparent;
-  border: none;
-  color: var(--text-soft);
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.modal-close:hover {
-  color: var(--text-main);
-}
-
 .modal-subtitle {
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   color: var(--text-soft);
   margin-bottom: 12px;
 }
+
+/* La carte doit permettre un positionnement absolu interne */
+.card.card-large {
+  position: relative;
+}
+
+/* Cadre du cocotier placé TOUT EN HAUT À DROITE */
+.card-palm-top-right {
+  position: absolute;
+  top: -220px;            /* ajuste verticalement */
+  right: 12px;          /* ajuste horizontalement */
+
+  background: hsl(253, 100%, 7%);
+  padding: 5px 10px;
+  border-radius: 30px;
+  border: 1px solid hsl(253, 100%, 7%);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 10px hsl(253, 100%, 7%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image du cocotier animée */
+.card-palm-tree {
+  height: 200px;       /* taille plus petite pour un coin de carte */
+  border-radius: 6px;
+  transform-origin: bottom center;
+  animation: palm-sway 3s ease-in-out infinite alternate;
+}
+
+/* Animation balancement */
+@keyframes palm-sway {
+  0% { transform: rotate(-10deg); }
+  100% { transform: rotate(10deg); }
+}
+
 
 /* RESPONSIVE */
 
@@ -443,21 +504,9 @@
   .main {
     padding: 18px 16px;
   }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .card-large {
-    grid-column: auto;
-  }
 }
 
-/* ANIMATIONS CARTES */
+/* ANIMATIONS */
 
 @keyframes slideUp {
   from {
@@ -468,25 +517,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Animation par défaut pour les cartes */
-.card {
-  opacity: 0;                   /* invisible au départ */
-  transform: translateY(30px);  /* décalée vers le bas */
-  animation: slideUp 0.6s ease-out forwards;
-}
-
-/* Léger décalage entre les cartes du haut */
-.stats-grid .card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.stats-grid .card:nth-child(2) {
-  animation-delay: 0.25s;
-}
-
-/* La grosse carte "Flash Loan Pools" arrive un peu après */
-.content-grid .card {
-  animation-delay: 0.4s;
 }

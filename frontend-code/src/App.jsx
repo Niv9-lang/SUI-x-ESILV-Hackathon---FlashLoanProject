@@ -1,8 +1,11 @@
 import { useState } from "react";
 import "./App.css";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
-import logoSUI from "./assets/logoSUI.jpg";
+import logoSIT from "./assets/logoSUI.jpg";
 import logoDEEP from "./assets/logoDEEP.jpg";
+import logoSITE from "./assets/logoSITE.jpg";
+import cocotier from "./assets/cocotier.jpg";
+
 
 function App() {
   // = null si aucun wallet n'est connecté, sinon { address: "0x123..." }
@@ -27,47 +30,33 @@ function App() {
 
   return (
   <div className="app">
-    {/* SIDEBAR FIXE À GAUCHE */}
-    <aside className="sidebar">
-      <div className="sidebar-logo">
-        <img src={logoSUI} alt="SUI-CS logo" className="logo-img" />
-        <span className="logo-text">SUI-CS</span>
-      </div>
-
-      <nav className="sidebar-nav">
-        <button className="sidebar-button">Dashboard</button>
-      </nav>
-
-      <div className="sidebar-footer">
-        <p className="sidebar-network">SUI Devnet</p>
-      </div>
-    </aside>
-
     {/* 🔹 TOUT le reste du site (bande + main) est DANS .content */}
-    <div className="content">
-      <div className="top-banner" />
+    <div className="top-banner" />
 
-      <main className="main">
-        <header className="topbar">
-          <div>
-            <h1 className="topbar-title">Make free money with Flash Loan</h1>
-            <p className="topbar-subtitle">
-              Monitor liquidity, launch arbitrage bots and manage your positions.
-            </p>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            {currentAccount && (
-              <div className="wallet-chip">
-                <span className="wallet-dot"></span>
-                <span className="wallet-address">{currentAccount ? "Connected" : ""}
-                </span>
-
-              </div>
-            )}
-            <ConnectButton />
-          </div>
-        </header>
+    <main className="main">
+      <header className="topbar">
+        <div className="topbar-left">
+          <img src={logoSITE} alt="SUI-CS logo" className="logo-img" />
+          <span className="logo-text">SUI-CS</span>
+        </div>
+        <div className="topbar-center">
+          <h1 className="topbar-title">Make free money with Flash Loan</h1>
+          <p className="topbar-subtitle">
+            Monitor liquidity, launch arbitrage bots and manage your positions.
+          </p>
+        </div>
+{/*style={{ display: "flex", alignItems: "center", gap: "12px" }}*/}
+        <div className="topbar-right">
+          {currentAccount && (
+            <div className="wallet-chip">
+              <span className="wallet-dot"></span>
+              <span className="wallet-address">{currentAccount ? "Connected" : ""}
+              </span>
+            </div>
+          )}
+          <ConnectButton />
+        </div>
+      </header>
 
         <section className="stats-grid">
           <div className="card">
@@ -88,6 +77,10 @@ function App() {
               <h2>Flash Loan Pools</h2>
               <span className="badge">SUI / DEEP</span>
             </div>
+            {/* Cadre cocotier */}
+            <div className="card-palm-top-right">
+              <img src={cocotier} alt="Palm" className="card-palm-tree" />
+            </div>
 
             <table className="table">
               <thead>
@@ -101,9 +94,7 @@ function App() {
               <tbody>
                 <tr>
                   <td className="pool-cell">
-                    <img src={logoSUI} className="token-logo" alt="SUI"/>
                     <span>SUI / DEEP</span>
-                    <img src={logoDEEP} className="token-logo" alt="USDC" />
                   </td>
                   <td>$4.1M</td>
                   <td>0.09%</td>
@@ -112,7 +103,7 @@ function App() {
                       className="table-btn"
                       onClick={() => openFlashLoanModal("SUI / USDC")}
                     >
-                      Click here
+                      Flash
                     </button>
                   </td>
                 </tr>
@@ -160,7 +151,6 @@ function App() {
         )}
       </main>
     </div>
-  </div>
 );
 
 }

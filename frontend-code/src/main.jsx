@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
+import { darkBunniLikeTheme } from "./suiTheme";  // ✅ nouveau
 
 // 🔹 Styles du dApp Kit (obligatoire pour ConnectButton)
 import "@mysten/dapp-kit/dist/index.css";
@@ -28,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <SuiClientProvider networks={networkConfig} defaultNetwork="devnet">
         {/* WalletProvider est OBLIGATOIRE pour que ConnectButton fonctionne */}
-        <WalletProvider autoConnect>
+        <WalletProvider theme={darkBunniLikeTheme}>
           <App />
         </WalletProvider>
       </SuiClientProvider>
