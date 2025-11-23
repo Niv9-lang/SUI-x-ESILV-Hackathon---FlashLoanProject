@@ -1,78 +1,99 @@
 module swap::execution {
     use swap::deepbook_flashloan;
     use sui::coin::{Self, Coin};
-    use sui::clock::Clock;
-    use sui::tx_context::{Self, TxContext};
+    use sui::clock::{Self, Clock}; 
     use sui::sui::SUI;
     use deepbook::pool::{Self, Pool};                  
 
     use token::deep::DEEP;
-    use turbos_clmm::pool::{Pool as TurbosPool, Versioned}; 
+    use turbos_clmm::pool::{Pool as TurbosPool, Versioned};
 
-    /// Fonction d'exécution complète pour l'arbitrage
+    /// Erreur : Montant insuffisant pour rembourser le flashloan
+    const E_INSUFFICIENT_REPAYMENT: u64 = 1;
+    
+    /// Erreur : Le swap DeepBook n'a pas produit de DEEP (deep_amount = 0)
+    const E_NO_DEEP_RECEIVED: u64 = 2;  
+
+    /// Calcule un deadline approprié pour les transactions flashloan
     /// 
-    /// Cette fonction réalise un arbitrage complet:
-    /// 1. Emprunte des SUI via flashloan sur DeepBook
-    /// 2. Swappe SUI -> DEEP sur DeepBook
-    /// 3. Swappe DEEP -> SUI sur Turbos
-    /// 4. Rembourse le flashloan
-    /// 5. Garde le profit (s'il y en a) 
+    /// Pour un flashloan, le deadline doit être court car la transaction doit être rapide.
+    /// Cette fonction calcule le timestamp actuel + un délai de sécurité.
     /// 
     /// # Arguments:
-    /// - `deepbook_pool`: Le pool DeepBook (Pool<DEEP, SUI>)
-    /// - `turbos_pool`: Le pool Turbos pour le swap DEEP -> SUI
-    /// - `borrow_amount`: Montant de SUI à emprunter
-    /// - `deep_fee`: Coins DEEP pour payer les frais du premier swap
-    /// - `min_deep_out`: Montant minimum de DEEP attendu après le premier swap
-    /// - `min_sui_out`: Montant minimum de SUI attendu après le deuxième swap
-    /// - `recipient`: Adresse qui recevra les profits
-    /// - `deadline`: Timestamp limite pour la transaction Turbos
-    /// - `clock`: Le Clock Sui
-    /// - `versioned`: Version du protocole Turbos
-    /// - `ctx`: Le contexte de transaction
+    /// - `clock`: L'objet Clock Sui
+    /// - `minutes_from_now`: Nombre de minutes à ajouter au timestamp actuel (recommandé: 5-10 minutes)
+    /// 
+    /// # Returns:
+    /// Timestamp en millisecondes (timestamp actuel + minutes_from_now)
+    /// 
+    /// # Exemple:
+    /// ```move
+    /// let deadline = calculate_deadline(clock, 10); // Deadline dans 10 minutes
+    /// ```
+    public fun calculate_deadline(clock: &Clock, minutes_from_now: u64): u64 {
+        let current_timestamp_ms = clock::timestamp_ms(clock);
+        let minutes_in_ms = minutes_from_now * 60 * 1000; // Convertir minutes en millisecondes
+        current_timestamp_ms + minutes_in_ms 
+    }
+
+
 
     public  fun execute_arbitrage<FeeType>(
         deepbook_pool: &mut Pool<DEEP, SUI>,
         turbos_pool: &mut TurbosPool<DEEP, SUI, FeeType>,
         borrow_amount: u64,
         deep_fee: Coin<DEEP>,
-        _min_deep_out: u64,
-        _min_sui_out: u64,
-        recipient: address,
-        deadline: u64,
-        clock: &Clock, 
+        min_deep_out: u64,
+        min_sui_out: u64,
+        recipient: address, 
+        _deadline: u64,
+        clock: &Clock,  
         versioned: &Versioned,
-        ctx: &mut TxContext
+        ctx: &mut TxContext 
     ) {
-        // 1. Premier swap: Emprunter SUI et swapper vers DEEP sur DeepBook
-        let (flash_loan, deep, sui_remaining) = deepbook_flashloan::first_swap<DEEP, SUI>(
+
+        let (flash_loan, deep, sui_remaining) = deepbook_flashloan::first_swap<DEEP, SUI>( //(Base / Quote)
             deepbook_pool,
             borrow_amount,
             deep_fee,
-            90u64,              // La démonstration utilisera 3 SUI = 100 DEEP environ
+            min_deep_out,  // min_expected: montant minimum de DEEP attendu
             clock,
             ctx
-        );
+        ); 
 
-        // 2. Deuxième swap: Swapper DEEP -> SUI sur Turbos
-        let sui_total = deepbook_flashloan::second_swap<FeeType>(
-            turbos_pool,
-            deep,
-            coin::value(&deep),  // amount: utiliser tout le DEEP
-            2u64,              // La démonstration utilisera 3 SUI c
+        // Deuxième swap: Swapper DEEP -> SUI sur Turbos
+        let deep_amount = coin::value(&deep);  // Calculer la valeur avant de déplacer deep
+        // Vérifier que deep_amount n'est pas 0
+        // Cela peut arriver si min_deep_out est trop élevé ou si le swap a échoué
+        assert!(deep_amount > 0, E_NO_DEEP_RECEIVED);
+        
+        // Ajuster min_sui_out pour éviter l'erreur 0x13 dans compute_swap_result
+        // Si min_sui_out est trop élevé par rapport à deep_amount, le swap échouera
+        // On accepte jusqu'à 50% de slippage pour être sûr que le swap passe
+        let adjusted_min_sui_out = if (min_sui_out > borrow_amount * 50 / 100) {
+            borrow_amount * 50 / 100  // Maximum 50% du montant emprunté
+        } else {
+            min_sui_out
+        };
+
+        let mut sui_total = deepbook_flashloan::second_swap(
+            turbos_pool,   
+            vector[deep],  // Transformer le Coin en vecteur
+            deep_amount,  // amount: utiliser tout le DEEP
+            adjusted_min_sui_out,  // min_amount_out: montant minimum ajusté de SUI attendu
             recipient,
-            deadline,
+            calculate_deadline(clock, 10), //10 minutes d'attente max
             clock,
             versioned,
-            sui_remaining,
+            sui_remaining, 
             ctx
         );
 
-        // 3. Vérifier qu'on a assez de SUI pour rembourser le flashloan
+        // Vérifier qu'on a assez de SUI pour rembourser le flashloan
         let sui_value = coin::value(&sui_total);
-        assert!(sui_value >= borrow_amount, 1); // Erreur si pas assez pour rembourser
+        assert!(sui_value >= borrow_amount, E_INSUFFICIENT_REPAYMENT);
 
-        // 4. Séparer le montant pour le remboursement et les profits
+        // Séparer le montant pour le remboursement et les profits
         let (sui_for_repayment, sui_profit) = if (sui_value > borrow_amount) {
             let repayment = coin::split(&mut sui_total, borrow_amount, ctx);
             (repayment, sui_total)
@@ -80,17 +101,14 @@ module swap::execution {
             (sui_total, coin::zero<SUI>(ctx))
         };
 
-        // 5. Rembourser le flashloan avec les SUI
+        // Rembourser le flashloan avec les SUI
         pool::return_flashloan_quote<DEEP, SUI>(
             deepbook_pool,
             sui_for_repayment,
             flash_loan 
         );
 
-        // 6. Transférer les profits au recipient (s'il y en a)
-        let profit_value = coin::value(&sui_profit);
-        if (profit_value > 0) {
-            transfer::public_transfer(sui_profit, recipient); 
-        }; 
-    }
-}     
+        // Transférer les profits au recipient (même si zéro, pour consommer la variable)
+        transfer::public_transfer(sui_profit, recipient);
+    } 
+}

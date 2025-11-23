@@ -1,0 +1,120 @@
+{"pool_id":"0xb663828d6217467c8a1838a03793da896cbe745b150ebd57d82f814ca579fc22","pool_name":"DEEP_SUI","base_asset_id":"0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP","base_asset_decimals":6,"base_asset_symbol":"DEEP","base_asset_name":"DeepBook Token","quote_asset_id":"0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI","quote_asset_decimals":9,"quote_asset_symbol":"SUI","quote_asset_name":"Sui","min_size":10000000,"lot_size":1000000,"tick_size":10000000},
+
+
+POOL ID DEEP/SUI : 0xb663828d6217467c8a1838a03793da896cbe745b150ebd57d82f814ca579fc22
+
+Commande bash : curl https://deepbook-indexer.mainnet.mystenlabs.com/get_pools
+
+
+POOL ID DEEP/SUI Turbos : 0xbca476e3c744648c65b1fae5551b86be8ad7f482ca9c2268dad1d6b4fd0e2635
+
+3 SUI : 3 000 000 000 MIST
+
+
+Version Turbos : 0xa5a0c25c79e428eba04fb98b3fb2a34db45ab26d4c8faf0d7e39d66a63891e64 / 0xf1cf0e81048df168ebeb1b8030fad24b3e0b53ae827c25053fff0779c1445b6f
+
+ID PACKAGE : 0xaae5a6ca154bba330d9368b6eaaa5ff3816d1769f0941a96f84743a9ef861fa3
+
+DEEPCOIN ID : 0x6de995124caafc4659e13e4625a9f0e48e2444dad00be10fa3a83cd24c40c4f9
+
+sui client call \
+  --package 0xd415a332feffa3b76bb92f514b767e4539a42a61896ec803196863920311d643 \
+  --module execution \
+  --function execute_arbitrage \
+  --type-args 0x91bfbc386a41afcfd9b2533058d7e915a1d3829089cc268ff4333d54d6339ca1::fee3000bps::FEE3000BPS \
+  --args \
+    0xb663828d6217467c8a1838a03793da896cbe745b150ebd57d82f814ca579fc22 \
+    0xbca476e3c744648c65b1fae5551b86be8ad7f482ca9c2268dad1d6b4fd0e2635 \
+    1000 \
+    0x9dc841a33b37f9b7775d9e8a0123754fd94f49966bd77bc39a5ee4869c82f12d \
+    1 \
+    0 \
+    0xc0cc34bc2fae5e651b9983f4469406a17c4a5cde36ff361150e9564c883fe393 \
+    0 \
+    0x6 \
+    0xf1cf0e81048df168ebeb1b8030fad24b3e0b53ae827c25053fff0779c1445b6f \
+  --gas-budget 1000000000
+
+sui client call --package 0xaae5a6ca154bba330d9368b6eaaa5ff3816d1769f0941a96f84743a9ef861fa3 --module execution --function execute_arbitrage --type-args 0x91bfbc386a41afcfd9b2533058d7e915a1d3829089cc268ff4333d54d6339ca1::fee3000bps::FEE3000BPS --args 0xb663828d6217467c8a1838a03793da896cbe745b150ebd57d82f814ca579fc22 0xbca476e3c744648c65b1fae5551b86be8ad7f482ca9c2268dad1d6b4fd0e2635 1000000000 0x9dc841a33b37f9b7775d9e8a0123754fd94f49966bd77bc39a5ee4869c82f12d 1 1 0xc0cc34bc2fae5e651b9983f4469406a17c4a5cde36ff361150e9564c883fe393 0 0x6 0xf1cf0e81048df168ebeb1b8030fad24b3e0b53ae827c25053fff0779c1445b6f --gas-budget 1000000000
+    
+
+/// Fonction d'exécution complète pour l'arbitrage
+    /// 
+    /// Cette fonction réalise un arbitrage complet:
+    /// 1. Emprunte des SUI via flashloan sur DeepBook
+    /// 2. Swappe SUI -> DEEP sur DeepBook
+    /// 3. Swappe DEEP -> SUI sur Turbos
+    /// 4. Rembourse le flashloan
+    /// 5. Garde le profit (s'il y en a) 
+    /// 
+    /// # IMPORTANT - Comment obtenir les adresses des pools:
+    /// 
+    /// Les pools sont des objets partagés sur Sui avec des IDs d'objets spécifiques.
+    /// `Pool<DEEP, SUI>` définit seulement le TYPE, pas l'instance spécifique.
+    /// 
+    /// Pour obtenir les IDs des pools:
+    /// 
+    /// 1. **DeepBook Pool** :
+    ///    - Via l'explorateur Sui : https://suiexplorer.com/?network=testnet
+    ///    - Via la CLI : `sui client call --package 0xdee9 --module pool --function get_all_pools`
+    ///    - Ou chercher dans la documentation DeepBook pour les pools officiels
+    /// 
+    /// 2. **Turbos Pool** :
+    ///    - Via l'explorateur Sui : https://suiexplorer.com/?network=testnet
+    ///    - Via la documentation Turbos pour les pools officiels
+    ///    - Ou utiliser les fonctions du protocole Turbos pour lister les pools
+    /// 
+    /// 3. **Turbos Versioned Object** :
+    ///    L'objet `Versioned` est un objet partagé unique qui représente la version du protocole Turbos.
+    ///    C'est un objet global créé lors du déploiement du protocole Turbos.
+    ///    **IDs connus** :
+    ///    - **Mainnet** : `0xa5a0c25c79e428eba04fb98b3fb2a34db45ab26d4c8faf0d7e39d66a63891e64`
+    ///      (Voir : https://suiscan.xyz/mainnet/object/0xa5a0c25c79e428eba04fb98b3fb2a34db45ab26d4c8faf0d7e39d66a63891e64)
+    ///    - **Testnet** : À rechercher dans l'explorateur Sui testnet ou la documentation Turbos
+    ///    **Comment l'obtenir** :
+    ///    - Via l'explorateur Sui : Rechercher les objets de type `Versioned` du package Turbos
+    ///    - Via la documentation Turbos : L'ID de l'objet Versioned est généralement documenté
+    ///    - Via la CLI : Chercher dans les objets du package Turbos CLMM
+    ///    - **Note** : Il n'y a généralement qu'un seul objet Versioned par réseau (testnet/mainnet)
+    /// 
+    /// Lors de l'appel de cette fonction via `sui client call`, vous devez passer les IDs d'objets:
+    /// ```bash
+    /// sui client call \
+    ///   --package <VOTRE_PACKAGE_ID> \
+    ///   --module execution \
+    ///   --function execute_arbitrage \
+    ///   --type-args <FeeType> \
+    ///   --args <DEEPBOOK_POOL_OBJECT_ID> <TURBOS_POOL_OBJECT_ID> <borrow_amount> <deep_fee> ...
+    /// ```
+    /// 
+    /// # Arguments:
+    /// - `deepbook_pool`: L'objet pool DeepBook (ID d'objet Sui de type Pool<DEEP, SUI>)
+    /// - `turbos_pool`: L'objet pool Turbos (ID d'objet Sui de type TurbosPool<DEEP, SUI, FeeType>)
+    /// - `borrow_amount`: Montant de SUI à emprunter en **MIST** (unité atomique de SUI)
+    ///   **Conversion** : 1 SUI = 1,000,000,000 MIST (10^9)
+    ///   **Exemples** :
+    ///   - 1 SUI = `1000000000` MIST
+    ///   - 3 SUI = `3000000000` MIST
+    ///   - 0.1 SUI = `100000000` MIST
+    ///   - 0.001 SUI = `1000000` MIST
+    /// - `deep_fee`: Coin<DEEP> pour payer les frais du premier swap
+    /// - `min_deep_out`: Montant minimum de DEEP attendu après le premier swap
+    /// - `min_sui_out`: Montant minimum de SUI attendu après le deuxième swap
+    /// - `recipient`: Adresse qui recevra les profits
+    /// - `deadline`: Timestamp limite pour la transaction Turbos (en millisecondes depuis l'epoch Unix)
+    ///   **Valeurs recommandées** :
+    ///   - Pour production : Utilisez `calculate_deadline(clock, 10)` pour un délai de 10 minutes
+    ///   - Pour tests : Vous pouvez utiliser une valeur très élevée comme `u64::MAX` ou `18446744073709551615`
+    ///   - Calcul manuel : `timestamp_actuel_ms + (minutes * 60 * 1000)`
+    ///   - Exemple : Si maintenant = 1700000000000 ms, deadline dans 10 min = 1700000600000 ms
+    /// - `clock`: L'objet Clock Sui (ID d'objet) - généralement `0x6` sur tous les réseaux
+    /// - `versioned`: L'objet Versioned Turbos (ID d'objet partagé)
+    ///   **IDs connus** :
+    ///   - **Mainnet** : `0xa5a0c25c79e428eba04fb98b3fb2a34db45ab26d4c8faf0d7e39d66a63891e64`
+    ///   - **Testnet** : À rechercher dans l'explorateur Sui testnet
+    ///   **Comment obtenir l'objet Versioned** :
+    ///   - C'est un objet partagé unique créé lors du déploiement de Turbos
+    ///   - Recherchez-le dans l'explorateur Sui en filtrant par type `Versioned` du package Turbos
+    ///   - Consultez la documentation Turbos pour l'ID officiel sur testnet/mainnet
+    ///   - **Note** : Il n'y a qu'un seul objet Versioned par réseau, c'est un objet global
+    /// - `ctx`: Le contexte de transaction (généré automatiquement)

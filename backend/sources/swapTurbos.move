@@ -1,22 +1,24 @@
-#[allow(deprecated_usage,lint(self_transfer), unused_field)]
+#[allow(deprecated_usage,lint(self_transfer), unused_use,unused_field)]
 module swap::swap_turbos {
     use sui::coin::{Self, Coin};
     use sui::clock::Clock;
-    use sui::tx_context::{Self, TxContext};
     
     use turbos_clmm::pool::{Self, Pool, Versioned};   
     use turbos_clmm::swap_router;
 
+    /// Erreur : Le vecteur de coins est vide
+    const E_EMPTY_COIN_VECTOR: u64 = 0;
+
     /// Helper function to merge a vector of coins into a single coin
     public fun merge_coins<CoinType>(mut coins: vector<Coin<CoinType>>): Coin<CoinType> {
         let len = vector::length(&coins);
-        assert!(len > 0, 0); // Le vecteur ne doit pas être vide
+        assert!(len > 0, E_EMPTY_COIN_VECTOR);
         let mut result = vector::pop_back(&mut coins);
         while (!vector::is_empty(&coins)) {
             coin::join(&mut result, vector::pop_back(&mut coins));
         };
         vector::destroy_empty(coins);
-        result 
+        result  
     }
 
     /// Swap CoinTypeA vers CoinTypeB sur Turbos
@@ -46,7 +48,7 @@ module swap::swap_turbos {
         amount: u64,
         amount_threshold: u64,
         sqrt_price_limit: u128,
-        _is_exact_in: bool,                         // true si amount est le montant d'entrée, false si c'est le montant de sortie
+        _is_exact_in: bool,         // true si amount est le montant d'entrée, false si c'est le montant de sortie
 
         recipient: address,
         deadline: u64,
@@ -54,22 +56,21 @@ module swap::swap_turbos {
         versioned: &Versioned,
         ctx: &mut TxContext
     ): (Coin<CoinTypeB>, Coin<CoinTypeA>) {
-        // Fusionner les coins d'entrée
-        
-        // Appeler la fonction Turbos
+        // swap_a_b_with_return_ fusionne automatiquement les coins en interne
+        // et retourne des coins individuels (pas des vecteurs)
         let (coin_b, coin_a_remaining) = swap_router::swap_a_b_with_return_<CoinTypeA, CoinTypeB, FeeType>(
             pool,
             coin_a,
             amount,
-            amount_threshold,
+            amount_threshold, 
             sqrt_price_limit,
             true,
             recipient,
-            deadline,
+            deadline, 
             clock,
             versioned,
             ctx
-        ); 
+        );  
         
         (coin_b, coin_a_remaining)      
   

@@ -1,13 +1,12 @@
-#[allow(deprecated_usage,lint(self_transfer), unused_field)]
+#[allow(deprecated_usage,lint(self_transfer), unused_field,unused_use)]
 module swap::deepbook_swap {
     use sui::coin::{Self, Coin};
     use sui::clock::Clock;
-    use sui::tx_context::{Self, TxContext};
     use sui::sui::SUI;
     
     use deepbook::pool::{Self, Pool};
     use token::deep::DEEP;
-
+ 
 
     /// Swap QuoteAsset vers BaseAsset sur DeepBook
     /// Retourne les BaseAsset obtenus pour être utilisés dans un swap suivant (ex: via Turbos)
@@ -21,6 +20,7 @@ module swap::deepbook_swap {
         ctx: &mut TxContext
     ): (Coin<BaseAsset>,Coin<QuoteAsset>) {  
 
+        //puisque c'est à nous de fournir une valeur pour les frais en DEEP, une partie nous est retourné
         let (base_out, quote_remaining, deep_leftover) = pool::swap_exact_quote_for_base<BaseAsset, QuoteAsset>(
             self, 
             quote_in, 
@@ -36,8 +36,8 @@ module swap::deepbook_swap {
         (base_out, quote_remaining)
     }
 
-    /// Alias pour swap_quote_to_base avec des noms plus spécifiques
-    /// Swap SUI vers DEEP sur DeepBook (pour Pool<DEEP, SUI>)
+    //  Alias pour swap_quote_to_base avec des noms plus spécifiques
+    //  Swap SUI vers DEEP sur DeepBook (pour Pool<DEEP, SUI>)
     public fun swap_sui_to_deep<BaseAsset, QuoteAsset>(
         self: &mut Pool<BaseAsset, QuoteAsset>,
         sui : Coin<QuoteAsset>,

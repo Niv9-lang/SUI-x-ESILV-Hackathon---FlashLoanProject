@@ -1,4 +1,4 @@
-#[allow(deprecated_usage,lint(self_transfer), unused_field)]
+#[allow(deprecated_usage,lint(self_transfer), unused_field,unused_use)]
 module swap::deepbook_flashloan {
     use sui::coin::{Self, Coin};
     use sui::clock::Clock;
@@ -9,7 +9,7 @@ module swap::deepbook_flashloan {
     use deepbook::pool::{Self, Pool};                  
     use deepbook::vault::{FlashLoan};
     use token::deep::DEEP;
-    use turbos_clmm::pool::{Pool as TurbosPool, Versioned};    
+    use turbos_clmm::pool::{Pool as TurbosPool, Versioned};     
               
             
 
@@ -66,7 +66,7 @@ module swap::deepbook_flashloan {
     /// Second swap: DEEP -> SUI sur Turbos
     public fun second_swap<FeeType>(
         pool: &mut TurbosPool<DEEP, SUI, FeeType>,
-        coin_a: Coin<DEEP>,     //deep qu'on a obtenu depuis le premier swap
+        coins_a: vector<Coin<DEEP>>,     //vecteur de DEEP qu'on a obtenu depuis le premier swap
         amount: u64,
         min_amount_out: u64,
         recipient: address,
@@ -80,7 +80,7 @@ module swap::deepbook_flashloan {
         // Swapper DEEP -> SUI sur Turbos
         let (mut sui, deep_remaining) = swap_turbos::swap_a_to_b<DEEP, SUI, FeeType>(
             pool,
-            vector[coin_a],
+            coins_a,
             amount,
             min_amount_out,
             0,  // sqrt_price_limit = 0 (pas de limite)
@@ -99,18 +99,4 @@ module swap::deepbook_flashloan {
         coin::join(&mut sui, sui_remaining);
         sui  
     }
-
-    /// Rembourser le flash loan du BASE asset
-    public fun return_base<BaseAsset, QuoteAsset>(
-        pool: &mut Pool<BaseAsset, QuoteAsset>,
-        base_coin: Coin<BaseAsset>,
-        flash_loan: FlashLoan
-    ) {
-        pool::return_flashloan_base<BaseAsset, QuoteAsset>(
-            pool,
-            base_coin,
-            flash_loan
-        ) 
-    } 
-
 }
