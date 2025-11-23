@@ -1,0 +1,21 @@
+[package]
+name = "swap"
+edition = "2024.beta" # edition = "legacy" to use legacy (pre-2024) Move
+# license = ""           # e.g., "MIT", "GPL", "Apache 2.0"
+# authors = ["..."]      # e.g., ["Joe Smith (joesmith@noemail.com)", "John Snow (johnsnow@noemail.com)"]
+
+[dependencies]
+# Cetus CLMM pour flash loan et swap
+CetusClmm = { git = "https://github.com/CetusProtocol/cetus-clmm-interface.git", subdir = "sui/cetus_clmm", rev = "mainnet-v1.49.0" }
+# Turbos CLMM pour le swap DEEP -> SUI
+TurbosCLMM = { git = "https://github.com/turbos-finance/turbos-sui-move-interface.git", subdir = "clmm", rev = "mainnet-v0.1.4", override = true }
+# DeepBook pour le token DEEP
+deepbook = { git = "https://github.com/MystenLabs/deepbookv3.git", subdir = "packages/deepbook", rev = "main" }
+# Token package (dépendance de deepbook pour DEEP)
+token = { git = "https://github.com/MystenLabs/deepbookv3.git", subdir = "packages/token", rev = "main" }
+
+[addresses]
+swap = "0x0"
+# Cetus Aggregator contract (mainnet)
+cetus_aggregator = "0x11451575c775a3e633437b827ecbc1eb51a5964b0302210b28f5b89880be21a2"
+# Note: deepbook définit ses propres adresses (deepbook et token) dans son Move.toml
