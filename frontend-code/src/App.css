@@ -1,0 +1,520 @@
+:root {
+  --bg: #0a0a0f;
+  --bg-soft: #15151d;
+  --bg-softer: #1d1d29;
+
+  --accent-strong: #07d623;
+
+  --text-main: #dadada;
+  --text-soft: #bdbdbd;
+
+  --border-soft: rgba(69, 2, 107, 0.94);
+
+  --radius-lg: 18px;
+
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(69, 2, 107, 0.94);
+}
+
+/* ROOT LAYOUT */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: var(--text-main);
+  font-family: "General Sans", sans-serif;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 200px;
+  padding: 24px 20px;
+  border-right: 1px solid var(--border-soft);
+  background: hsl(252, 83%, 5%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.content {
+  margin-left: 200px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-img {
+  width: 70px;
+  border-radius: 999px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.logo-text {
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  color: #e5e7eb;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.sidebar-button:hover {
+  background: rgba(69, 2, 107, 0.94);
+  color: var(--text-main);
+  transform: translateX(2px);
+}
+
+.sidebar-footer {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  border-top: 1px solid rgba(15, 23, 42, 0.9);
+  padding-top: 16px;
+}
+
+.sidebar-network {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(69, 2, 107, 0.94);
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  padding: 26px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* TOP BANNER */
+
+.top-banner {
+  width: 100%;
+  height: 220px;
+  background-image: url("./assets/svg/logo3.svg");
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+/* TOPBAR */
+/* Structure 3 colonnes pour la topbar */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* gauche - centre - droite */
+  align-items: center;
+  width: 100%;
+}
+
+.topbar > div:first-child {
+  flex: 1;                /* prend toute la place disponible */
+  text-align: center;     /* centre le titre et le sous-titre */
+}
+
+.topbar-title {
+  font-size: 2.5rem;
+  letter-spacing: 0.03em;
+}
+
+.topbar-subtitle {
+  color: var(--text-soft);
+  font-size: 1.5rem;
+}
+
+/* Bouton Connect Wallet – style bunni-like */
+.topbar button {
+  border-radius: 500px;
+  padding: 8px 18px;
+  background: rgba(15, 23, 42, 0.9);  /* fond sombre neutre */
+  border: 1px solid rgba(148, 163, 184, 0.35); /* light border */
+  color: #e5e7eb ;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
+}
+
+.topbar button:hover {
+  background: rgba(30, 64, 175, 0.9) !important; /* bleu léger façon bunni */
+  border-color: rgba(129, 140, 248, 0.8) !important;
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.topbar button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(15, 23, 42, 0.9);
+}
+
+/* LOGO À GAUCHE */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* TITRE AU CENTRE */
+.topbar-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* BOUTON CONNECT À DROITE */
+.topbar-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+
+/* WALLET INDICATOR */
+
+.wallet-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent-strong);
+}
+
+.wallet-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(69, 2, 107, 0.4);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+}
+
+/* STAT CARDS */
+
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+}
+
+.card {
+  background: radial-gradient(circle at top left, rgba(141, 5, 175, 0.301), var(--bg-soft));
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  padding: 52px 100px;
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.card-label {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--text-soft);
+  margin-bottom: 20px;
+}
+
+.card-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.card-sub {
+  font-size: 1.5rem;
+  color: var(--text-soft);
+  margin-top: 4px;
+}
+
+/* POOLS CARD */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+}
+
+.badge {
+  font-size: 1.5rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgb(59, 5, 129);
+  color: var(--text-soft);
+}
+
+/* TABLE */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.5rem;
+  margin-top: 6px;
+}
+
+.table th,
+.table td {
+  padding: 8px 4px;
+  text-align: left;
+}
+
+.table th {
+  color: var(--text-soft);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(69, 2, 107, 0.94);
+}
+
+.table tr + tr td {
+  border-top: 1px solid rgba(69, 2, 107, 0.94);
+}
+
+.table tr:hover td {
+  background: rgba(1, 83, 42, 0.39);
+}
+
+/* Bouton Flash – même style que Connect Wallet */
+.table-btn {
+  border-radius: 100px;
+  padding: 8px 18px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e5e7eb;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.3px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+}
+
+.table-btn:hover {
+  background: rgba(30, 64, 175, 0.9);
+  border-color: rgba(129, 140, 248, 0.8);
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.table-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(15, 23, 42, 0.9);
+}
+
+
+/* FORM */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.form-group label {
+  color: var(--text-soft);
+}
+
+.form-group input,
+.form-group select {
+  background: var(--bg-softer);
+  border-radius: 50px;
+  border: 1px solid var(--border-soft);
+  padding: 16px 18px;
+  color: var(--text-main);
+  font-size: 1.2rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-strong);
+}
+
+/* BUTTON */
+
+.primary-btn {
+  width: 100%;
+  border-radius: 25px;
+  border: none;
+  margin-top: 10px;
+  padding: 15px 20px;
+  background: linear-gradient(90deg, #1c02588e, #80017980);
+  color: #c39de9;
+  font-size: 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-glow);
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
+/* MODAL FLASH LOAN */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: var(--bg-soft);
+  border-radius: var(--radius-lg);
+  padding: 80px 100px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-soft);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+}
+
+/* La carte doit permettre un positionnement absolu interne */
+.card.card-large {
+  position: relative;
+}
+
+/* Cadre du cocotier placé TOUT EN HAUT À DROITE */
+.card-palm-top-right {
+  position: absolute;
+  top: -220px;            /* ajuste verticalement */
+  right: 12px;          /* ajuste horizontalement */
+
+  background: hsl(253, 100%, 7%);
+  padding: 5px 10px;
+  border-radius: 30px;
+  border: 1px solid hsl(253, 100%, 7%);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 10px hsl(253, 100%, 7%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image du cocotier animée */
+.card-palm-tree {
+  height: 200px;       /* taille plus petite pour un coin de carte */
+  border-radius: 6px;
+  transform-origin: bottom center;
+  animation: palm-sway 3s ease-in-out infinite alternate;
+}
+
+/* Animation balancement */
+@keyframes palm-sway {
+  0% { transform: rotate(-10deg); }
+  100% { transform: rotate(10deg); }
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1040px) {
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 18px 16px;
+  }
+}
+
+/* ANIMATIONS */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
